@@ -13,15 +13,13 @@ export const About: React.FC<AboutProps> = ({ companyInfo, isLoading }) => {
 
     const makeUrlsClickable = useCallback((html: string): string => {
         const urlRegex = /(https?:\/\/[^\s]+)/g;
-        return html.replace(urlRegex, (match) => {
-            const urlWithoutLastCharacter = match.slice(0, -2);
-            return `<a href="${urlWithoutLastCharacter}" target="_blank" class="link">${urlWithoutLastCharacter}</a>${match.slice(-1)})`;
-        });
-        }, [])
+        return html.replace(urlRegex, '<a href="$1" target="_blank" class="link">$1</a>');
+    }, [])
 
     const contentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        // Make URLs clickable when component mounts
         if (!isLoading && companyInfo) {
             const processedHtml = makeUrlsClickable(companyInfo);
             if (contentRef.current) {

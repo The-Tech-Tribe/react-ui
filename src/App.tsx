@@ -8,15 +8,24 @@ function App() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleSearch = useCallback((term: string) => {
-        const apiURL = `127.0.0.1:5000/company?name=${term}`;
+        const apiURL = `http://127.0.0.1:5000/ss`;
         setIsLoading(true);
-        axios.get(apiURL)
+        const payload = {
+            company: term
+        };
+
+        const config = {
+            'Content-Type': 'application/json'
+        }
+
+        axios.post(apiURL, payload)
             .then((response) => {
-                setCompanyDescription(response.data);
+                console.log(response.data);
+                setCompanyDescription(response.data?.description);
                 setIsLoading(false);
             })
             .catch((e) => {
-                setCompanyDescription('AMDAris Limited Liability Company is a company based in Chișinău, Moldova. It is managed by Petru Haheu and has an official identification number of 1009600020033. The company\'s contact information includes a fax number at (022) 00-02-61 and an email address at [email protected] They have a website at www.amdaris.com and can be found on Facebook , LinkedIn (https://www.linkedin.com/company/amdaris-llp/), and Twitter (http://twitter.com/Amdaris). The office is located in Chișinău at MD-2012, mun.Chișinău, mun.Chișinău, str.M-t Varlaam, 63/23, et. 10. Amdaris is a limited liability company that delivers exceptional software through established processes.');
+                setCompanyDescription('-')
                 setIsLoading(false);
             })
             .finally(() => setIsLoading(false));
